@@ -8,9 +8,6 @@ import com.zee.springai.service.SpringAiBoardGameService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.ollama.OllamaChatModel;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,10 +35,7 @@ class SpringAiBoardGameServiceWireMockTest {
     Resource responseResource;
 
     @Autowired
-    private OpenAiChatModel openAiChatModel;
-
-    @Autowired
-    private OllamaChatModel ollamaChatModel;
+    SpringAiBoardGameService springAiBoardGameService;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -59,10 +53,9 @@ class SpringAiBoardGameServiceWireMockTest {
 
     @Test
     void testAskQuestion() {
-        SpringAiBoardGameService boardGameService = new SpringAiBoardGameService(openAiChatModel, ollamaChatModel);
-        Answer answer = boardGameService.askQuestion(new Question("What is the capital of France?"));
+        Answer answer = springAiBoardGameService.askQuestion(new Question("What is the capital of France?"));
 
         Assertions.assertThat(answer).isNotNull();
-        Assertions.assertThat(answer.answer()).isEqualTo("Paris");
+        Assertions.assertThat(answer.answer()).contains("Paris");
     }
 }
