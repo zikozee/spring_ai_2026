@@ -21,15 +21,15 @@ import org.springframework.stereotype.Service;
 public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleService {
 
     private final ChatModel chatModel;
-    private final Resource questionPromptTemplate;
+    private final Resource promptTemplate;
     private final GameRulesService gameRulesService;
 
     //@Qualifier("openAiChatModel")
     public SpringAiBoardGameWithTitleService(@Qualifier("ollamaChatModel") ChatModel chatModel,
-                                             @Value("classpath:/promptTemplates/questionPromptTemplate.st") Resource questionPromptTemplate,
+                                             @Value("classpath:/promptTemplates/systemPromptTemplate.st") Resource systemPromptTemplate,
                                              GameRulesService gameRulesService) {
         this.chatModel = chatModel;
-        this.questionPromptTemplate = questionPromptTemplate;
+        this.promptTemplate = systemPromptTemplate;
         this.gameRulesService = gameRulesService;
     }
 
@@ -40,11 +40,14 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
 
         ChatClient chatClient = ChatClient.create(chatModel);
         String answerText = chatClient.prompt()
-                .user(userSpec -> userSpec
-                        .text(questionPromptTemplate)
+
+                .system(userSpec -> userSpec
+                        .text(promptTemplate)
                         .param("gameTitle", questionWithTitle.gameTitle())
-                        .param("question", questionWithTitle.question())
                         .param("rules", gameRules))
+
+                .user(questionWithTitle.question())
+
                 .call()
                 .content();
 
