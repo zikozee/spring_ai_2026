@@ -48,6 +48,13 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
 
                 .user(questionWithTitle.question())
 
+                // i can override props here
+//                .options(ChatOptions.builder()
+//                        .temperature(0.8)
+//                        .topP(0.9)
+//                        .topK(6)
+//                        .build())
+
                 .call()
                 .entity(AnswerWithTitle.class);
 //                .content();
