@@ -6,7 +6,11 @@ import com.zee.springai.dto.QuestionWithTitle;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.ResponseEntity;
+import org.springframework.ai.chat.metadata.ChatResponseMetadata;
+import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -42,7 +46,7 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
 
         ChatClient chatClient = ChatClient.create(chatModel);
 //        String answerText = chatClient.prompt()
-        return chatClient.prompt()
+        ResponseEntity<ChatResponse, AnswerWithTitle> responseEntity = chatClient.prompt()
                 .system(systemSpec -> systemSpec
                         .text(promptTemplate)
                         .param("gameTitle", questionWithTitle.gameTitle())
@@ -58,9 +62,15 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
 //                        .build())
 
                 .call()
-                .entity(AnswerWithTitle.class);
+                .responseEntity(AnswerWithTitle.class);
 //                .content();
 
+        ChatResponse response = responseEntity.getResponse();
+
+        ChatResponseMetadata metadata = response.getMetadata();
+        logUsage(metadata.getUsage());
+
+        return responseEntity.entity();
 //        return new AnswerWithTitle(questionWithTitle.gameTitle(), answerText);
     }
 
@@ -77,5 +87,9 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
                 .user(questionWithTitle.question())
                 .stream()
                 .content();
+    }
+
+    private void logUsage(Usage usage) {
+        log.info("Token usage: prompt={}, generation={}, total={}", usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
     }
 }
