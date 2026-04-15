@@ -3,6 +3,7 @@ package com.zee.springai.service;
 
 import com.zee.springai.dto.AnswerWithTitle;
 import com.zee.springai.dto.QuestionWithTitle;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 /**
  * @dev : Ezekiel Eromosei
@@ -41,7 +43,7 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
         ChatClient chatClient = ChatClient.create(chatModel);
 //        String answerText = chatClient.prompt()
         return chatClient.prompt()
-                .system(userSpec -> userSpec
+                .system(systemSpec -> systemSpec
                         .text(promptTemplate)
                         .param("gameTitle", questionWithTitle.gameTitle())
                         .param("rules", gameRules))
@@ -60,5 +62,20 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
 //                .content();
 
 //        return new AnswerWithTitle(questionWithTitle.gameTitle(), answerText);
+    }
+
+    public Flux<String> askQuestionStream(@Valid QuestionWithTitle questionWithTitle) {
+
+        String gameRules = gameRulesService.getRulesFor(questionWithTitle.gameTitle());
+
+        return ChatClient.create(chatModel)
+                .prompt()
+                .system(systemSpec -> systemSpec
+                        .text(promptTemplate)
+                        .param("gameTitle", questionWithTitle.gameTitle())
+                        .param("rules", gameRules))
+                .user(questionWithTitle.question())
+                .stream()
+                .content();
     }
 }

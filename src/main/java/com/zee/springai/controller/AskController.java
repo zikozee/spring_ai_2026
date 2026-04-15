@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 /**
  * @dev : Ezekiel Eromosei
@@ -41,5 +42,12 @@ public class AskController {
     @PostMapping(path = "ask-with-game-title", produces = MediaType.APPLICATION_JSON_VALUE)
     public AnswerWithTitle askWithGameTitle(@RequestBody @Valid QuestionWithTitle questionWithTitle){
         return boardGameWithTitleService.askQuestion(questionWithTitle);
+    }
+
+
+    //Newline Delimited JSON
+    @PostMapping(path = "stream-ask", produces = MediaType.APPLICATION_NDJSON_VALUE) //using text/event-stream prepends data
+    public Flux<String> streamAsk(@RequestBody @Valid QuestionWithTitle questionWithTitle){
+        return boardGameWithTitleService.askQuestionStream(questionWithTitle);
     }
 }
