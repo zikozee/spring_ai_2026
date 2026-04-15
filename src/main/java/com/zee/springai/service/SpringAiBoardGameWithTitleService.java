@@ -39,8 +39,8 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
         String gameRules = gameRulesService.getRulesFor(questionWithTitle.gameTitle());
 
         ChatClient chatClient = ChatClient.create(chatModel);
-        String answerText = chatClient.prompt()
-
+//        String answerText = chatClient.prompt()
+        return chatClient.prompt()
                 .system(userSpec -> userSpec
                         .text(promptTemplate)
                         .param("gameTitle", questionWithTitle.gameTitle())
@@ -49,8 +49,9 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
                 .user(questionWithTitle.question())
 
                 .call()
-                .content();
+                .entity(AnswerWithTitle.class);
+//                .content();
 
-        return new AnswerWithTitle(questionWithTitle.gameTitle(), answerText);
+//        return new AnswerWithTitle(questionWithTitle.gameTitle(), answerText);
     }
 }
