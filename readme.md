@@ -106,3 +106,14 @@
       "answer": "To build the Church, make a delivery to it by transporting the required materials and consuming them. The required materials and point rewards are different for each slot."
     }" into class com.zee.springai.dto.AnswerWithTitle
  `
+
+### RAG WITH ADVISOR
+- _**QuestionAnswerAdvisor**_ [see implementation]  appends the below to the prompt 
+- Context information is below.
+  ---------------------
+  {question_answer_context}
+  ---------------------
+  Given the context and provided history information and no prior knowledge,
+  reply to the user comment. If the answer is not in the context, inform
+  the user that you can't answer the question.
+

@@ -1,6 +1,7 @@
 package com.zee.springai.service;
 
 
+import com.zee.springai.util.AiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
@@ -31,7 +32,7 @@ public class GameRulesService {
                 .topK(6) // default is
                 .similarityThreshold(0.5) // range 0.0 - 1.0
                 .filterExpression(new FilterExpressionBuilder()
-                        .eq("gameTitle", normalizeGameTitle(gameTitle)).build()
+                        .eq("gameTitle", AiUtil.normalizeGameTitle(gameTitle)).build()
                 )
                 .build();
 
@@ -48,9 +49,6 @@ public class GameRulesService {
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
-    private String normalizeGameTitle(String gameTitle){
-        return gameTitle.toLowerCase().replace(" ", "_");
-    }
 
 //    public String getRulesFor(String gameName){
 //        try{
