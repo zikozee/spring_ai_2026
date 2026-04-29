@@ -117,3 +117,32 @@
   reply to the user comment. If the answer is not in the context, inform
   the user that you can't answer the question.
 
+### APPLYING MODULAR RAG
+- _**RetrievalAugmentationAdvisor**_ is a modular RAG advisor that lets you customize its behavior by plugging in supporting components to handle various tasks.
+  - e.g ensure that the question being asked is in the same language as the documents being queried from the vector store
+  - say you want to increase the accuracy of the documents found when querying the vector store by focusing the user’s query.
+  -  maybe you want to find relevant documents from some location other than a vector store.
+  - VectorStoreDocumentRetriever is the only implementation available **you can create other implementations of the interface to meet other business needs**
+`java 
+  public interface DocumentRetriever extends Function<Query, List<Document>> {
+      List<Document> retrieve(Query query);
+      default List<Document> apply(Query query) {
+        return retrieve(query);
+      }
+    }
+`
+
+- add dependency
+  - implementation 'org.springframework.ai:spring-ai-rag:2.0.0-M4'
+  
+  #### Rewriting the user’s query
+  - Spring AI offers a query transformer called **RewriteQueryTransformer** that will rewrite the user’s query to be more concise and clear-cut. It works its magic by using an LLM via a ChatClient
+
+  #### Translating user queries
+  - **TranslationQueryTransformer** is another query transformer that translates the user’s query to a target language, ideally matching the language of the documents.
+  
+  #### Expanding user queries (opposite of RewriteQueryTransformer)
+  - MultiQueryExpander takes an opposite approach to RewriteQueryTransformer. 
+    - Instead of simplifying the query, MultiQueryExpander expands it by creating multiple queries, each a different way of saying the original.
+  
+  - The idea here is that by asking the same question in multiple different ways, the vector search might identify relevant documents that it wouldn’t have matched based on the original wording.

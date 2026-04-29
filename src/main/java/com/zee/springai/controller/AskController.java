@@ -5,10 +5,7 @@ import com.zee.springai.dto.Answer;
 import com.zee.springai.dto.AnswerWithTitle;
 import com.zee.springai.dto.Question;
 import com.zee.springai.dto.QuestionWithTitle;
-import com.zee.springai.service.SelfEvaluationgBoardGameService;
-import com.zee.springai.service.SpringAiBoardGameRagAdvisor;
-import com.zee.springai.service.SpringAiBoardGameService;
-import com.zee.springai.service.SpringAiBoardGameWithTitleService;
+import com.zee.springai.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -30,6 +27,7 @@ public class AskController {
     private final SelfEvaluationgBoardGameService selfEvaluationgBoardGameService;
     private final SpringAiBoardGameWithTitleService boardGameWithTitleService;
     private final SpringAiBoardGameRagAdvisor springAiBoardGameRagAdvisor;
+    private final SpringAiBoardGameModularRagAdvisor springAiBoardGameModularRagAdvisor;
 
     @PostMapping(path = "ask", produces = MediaType.APPLICATION_JSON_VALUE)
     public Answer ask(@RequestBody Question question){
@@ -49,6 +47,11 @@ public class AskController {
     @PostMapping(path = "ask-with-advisor", produces = MediaType.APPLICATION_JSON_VALUE)
     public AnswerWithTitle askWithAdvisor(@RequestBody @Valid QuestionWithTitle questionWithTitle){
         return springAiBoardGameRagAdvisor.askQuestion(questionWithTitle);
+    }
+
+    @PostMapping(path = "ask-with-modular-advisor", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AnswerWithTitle askWithModularAdvisor(@RequestBody @Valid QuestionWithTitle questionWithTitle){
+        return springAiBoardGameModularRagAdvisor.askQuestion(questionWithTitle);
     }
 
 
