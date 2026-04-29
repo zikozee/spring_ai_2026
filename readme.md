@@ -62,3 +62,47 @@
   - Unfortunately, if you are using one of the LLMs that don’t honor requested formatting, 
   - you won’t be able to reliably count on the results to be converted and bound to an object. 
   - If that happens, a JsonParseException will be thrown when Spring AI tries to bind the non-JSON response to an object.
+
+## IMPLEMENTING RAG ON GAMERULES
+- note the other project _**https://github.com/zikozee/spring_ai_2026_rag_augmentation**_ already has the vector store loaded
+- we just connect to the same vector store via this project
+`java 
+        SearchRequest searchRequest = SearchRequest
+                .builder()
+                .query(question)
+                .topK(6) // default is 4
+                .similarityThreshold(0.5) // range 0.0 - 1.0
+                .filterExpression(new FilterExpressionBuilder()
+                        .eq("gameTitle", normalizeGameTitle(gameTitle)).build()
+                )
+                .build();
+`
+- increasing topK means more tokens
+- similarity threshold 1.0 means exact match, 
+  - Although the similarity threshold can be useful in weeding out some results that don’t seem all that relevant, 
+  - take caution against setting it too high. The higher it is set, 
+  - the greater the possibility that you will get fewer (or possibly zero) results back, 
+  - and the LLM will not have enough context to be able to respond to the question.
+
+- askQuestion for Ollama was returning two separate conflicting json but openAi worked well
+- `json   
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string"
+        },
+        "gameTitle": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "answer",
+        "gameTitle"
+      ],
+      "additionalProperties": false
+    } {
+      "gameTitle": "Hamlet",
+      "answer": "To build the Church, make a delivery to it by transporting the required materials and consuming them. The required materials and point rewards are different for each slot."
+    }" into class com.zee.springai.dto.AnswerWithTitle
+ `

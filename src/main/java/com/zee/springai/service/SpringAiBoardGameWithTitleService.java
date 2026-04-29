@@ -31,7 +31,7 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
     private final GameRulesService gameRulesService;
 
     //@Qualifier("openAiChatModel")
-    public SpringAiBoardGameWithTitleService(@Qualifier("ollamaChatModel") ChatModel chatModel,
+    public SpringAiBoardGameWithTitleService(@Qualifier("openAiChatModel") ChatModel chatModel,
                                              @Value("classpath:/promptTemplates/systemPromptTemplate.st") Resource systemPromptTemplate,
                                              GameRulesService gameRulesService) {
         this.chatModel = chatModel;
@@ -42,7 +42,7 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
     @Override
     public AnswerWithTitle askQuestion(QuestionWithTitle questionWithTitle) {
 
-        String gameRules = gameRulesService.getRulesFor(questionWithTitle.gameTitle());
+        String gameRules = gameRulesService.getRulesFor(questionWithTitle.gameTitle(), questionWithTitle.question());
 
         ChatClient chatClient = ChatClient.create(chatModel);
 //        String answerText = chatClient.prompt()
@@ -76,7 +76,7 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
 
     public Flux<String> askQuestionStream(@Valid QuestionWithTitle questionWithTitle) {
 
-        String gameRules = gameRulesService.getRulesFor(questionWithTitle.gameTitle());
+        String gameRules = gameRulesService.getRulesFor(questionWithTitle.gameTitle(), questionWithTitle.question());
 
         return ChatClient.create(chatModel)
                 .prompt()

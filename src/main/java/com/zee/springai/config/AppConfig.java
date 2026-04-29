@@ -1,9 +1,14 @@
 package com.zee.springai.config;
 
 
+import io.qdrant.client.QdrantClient;
+import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.vectorstore.qdrant.QdrantVectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.restclient.RestClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.zalando.logbook.spring.LogbookClientHttpRequestInterceptor;
 
 /**
@@ -19,5 +24,17 @@ public class AppConfig {
     @Bean
     RestClientCustomizer logbookCustomizer(LogbookClientHttpRequestInterceptor logbookInterceptor) {
         return restclient -> restclient.requestInterceptor(logbookInterceptor);
+    }
+
+
+    @Primary
+    @Bean
+    QdrantVectorStore customVectorStore(QdrantClient client, @Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel){
+
+        return QdrantVectorStore
+                .builder(client, embeddingModel)
+                .initializeSchema(true)
+                .collectionName("GameRules")
+                .build();
     }
 }
