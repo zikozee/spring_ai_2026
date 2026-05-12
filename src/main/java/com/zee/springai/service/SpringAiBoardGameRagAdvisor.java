@@ -6,7 +6,9 @@ import com.zee.springai.dto.QuestionWithTitle;
 import com.zee.springai.util.AiUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,14 +28,16 @@ public class SpringAiBoardGameRagAdvisor {
     private final ChatModel chatModel;
     private final Resource promptTemplate;
     private final VectorStore vectorStore;
+    private final ChatMemory chatMemory;
 
     //@Qualifier("openAiChatModel")
     public SpringAiBoardGameRagAdvisor(@Qualifier("openAiChatModel") ChatModel chatModel,
                                        @Value("classpath:/promptTemplates/ragAdvisorPromptTemplate.st") Resource promptTemplate,
-                                       VectorStore vectorStore) {
+                                       VectorStore vectorStore, @Qualifier("customChatMemory") ChatMemory chatMemory) {
         this.chatModel = chatModel;
         this.promptTemplate = promptTemplate;
         this.vectorStore = vectorStore;
+        this.chatMemory = chatMemory;
     }
 
 
@@ -49,7 +53,11 @@ public class SpringAiBoardGameRagAdvisor {
                 .user(questionWithTitle.question())
                 .advisors(advisorSpec ->
                         advisorSpec
-                                .advisors(QuestionAnswerAdvisor.builder(vectorStore).build())
+                                .advisors(
+//                                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
+                                        PromptChatMemoryAdvisor.builder(chatMemory).build(),
+                                        QuestionAnswerAdvisor.builder(vectorStore).build()
+                                )
                                 .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, gameNameMatch)
                         )
                 .call()

@@ -146,3 +146,18 @@
     - Instead of simplifying the query, MultiQueryExpander expands it by creating multiple queries, each a different way of saying the original.
   
   - The idea here is that by asking the same question in multiple different ways, the vector search might identify relevant documents that it wouldn’t have matched based on the original wording.
+
+### MAKING MEMORIES IN AI
+- Spring AI implements management of conversational memory as advisors
+  - More Specifically Spring AI provides three different advisors
+    - **MessageChatMemoryAdvisor**
+      - adds the chat history to the prompt as distinct messages for the user and assistant roles. _**Not all Model supports this**_
+    - **PromptChatMemoryAdvisor**
+      - will inject the chat history into the prompt as one big string injected into a system message template
+    - **VectorStoreChatMemoryAdvisor**
+      - takes a completely different approach to storing chat history by storing it in a vector store
+        -  it can query the vector store, the same way it would query for document chunks in RAG, finding the pieces of chat history that are most similar to the question being asked
+          - then injects it into the prompt as string injected into a system message template same as PromptChatMemoryAdvisor
+        
+- MessageChatMemoryAdvisor and PromptChatMemoryAdvisor store the chat history via some implementation of ChatMemory
+  - we can also customize the max messages in the chatMemory (MessageChatMemoryAdvisor, PromptChatMemoryAdvisor: since they both use the MessageWindowChatMemory)

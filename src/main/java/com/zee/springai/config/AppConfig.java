@@ -2,6 +2,9 @@ package com.zee.springai.config;
 
 
 import io.qdrant.client.QdrantClient;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.qdrant.QdrantVectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,6 +38,14 @@ public class AppConfig {
                 .builder(client, embeddingModel)
                 .initializeSchema(true)
                 .collectionName("GameRules")
+                .build();
+    }
+
+    @Bean
+    ChatMemory customChatMemory(ChatMemoryRepository chatMemoryRepository) {
+        return MessageWindowChatMemory.builder()
+                .chatMemoryRepository(chatMemoryRepository)
+                .maxMessages(50)  //
                 .build();
     }
 }
