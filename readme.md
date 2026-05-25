@@ -161,3 +161,7 @@
         
 - MessageChatMemoryAdvisor and PromptChatMemoryAdvisor store the chat history via some implementation of ChatMemory
   - we can also customize the max messages in the chatMemory (MessageChatMemoryAdvisor, PromptChatMemoryAdvisor: since they both use the MessageWindowChatMemory)
+
+### CONVERSATION ID
+- this is used to track a chat history, we receive it from the header letting a user specify
+- more like an isolation for a specific chat user

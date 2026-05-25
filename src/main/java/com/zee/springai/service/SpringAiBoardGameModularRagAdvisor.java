@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import static org.springframework.ai.chat.memory.ChatMemory.CONVERSATION_ID;
+
 /**
  * @dev : Ezekiel Eromosei
  * @date : 05 Apr, 2026
@@ -40,7 +42,7 @@ public class SpringAiBoardGameModularRagAdvisor {
     }
 
 
-    public AnswerWithTitle askQuestion(QuestionWithTitle questionWithTitle) {
+    public AnswerWithTitle askQuestion(QuestionWithTitle questionWithTitle, String conversationId) {
 
         String gameNameMatch = String.format("gameTitle == '%s'", AiUtil.normalizeGameTitle(questionWithTitle.gameTitle()));
 
@@ -80,6 +82,7 @@ public class SpringAiBoardGameModularRagAdvisor {
                                                 .build()
                                 )
                                 .param(VectorStoreDocumentRetriever.FILTER_EXPRESSION, gameNameMatch)
+                                .param(CONVERSATION_ID, conversationId)
                         )
                 .call()
                 .entity(AnswerWithTitle.class);

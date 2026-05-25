@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -50,8 +51,10 @@ public class AskController {
     }
 
     @PostMapping(path = "ask-with-modular-advisor", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AnswerWithTitle askWithModularAdvisor(@RequestBody @Valid QuestionWithTitle questionWithTitle){
-        return springAiBoardGameModularRagAdvisor.askQuestion(questionWithTitle);
+    public AnswerWithTitle askWithModularAdvisor(
+            @RequestHeader(name = "X_AI_CONVERSATION_ID", defaultValue = "default") String conversationId,
+            @RequestBody @Valid QuestionWithTitle questionWithTitle){
+        return springAiBoardGameModularRagAdvisor.askQuestion(questionWithTitle, conversationId);
     }
 
 
