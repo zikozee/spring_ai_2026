@@ -26,6 +26,25 @@ spring:
 #      embedding:
 #        model: mxbai-embed-large
 
+#    chat:
+#      memory:
+#        repository:
+#          cassandra:
+#            keyspace: boardgamebuddy
+#            messages-column: chat_messages
+#            table: chat_memory
+
+#  cassandra:
+#    local-datacenter: dc1
+#    contact-points: 127.0.0.1:9042
+#    port: 9042
+
+#  neo4j:
+#    uri: bolt://localhost:7687
+#    authentication:
+#      username: erergre
+#      password: sfgsf
+
 logging:
   level:
     #to see raw request and response

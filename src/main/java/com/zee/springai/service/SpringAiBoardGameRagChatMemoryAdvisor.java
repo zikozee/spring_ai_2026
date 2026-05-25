@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class SpringAiBoardGameRagAdvisor {
+public class SpringAiBoardGameRagChatMemoryAdvisor {
 
     private final ChatModel chatModel;
     private final Resource promptTemplate;
@@ -31,16 +31,17 @@ public class SpringAiBoardGameRagAdvisor {
     private final ChatMemory chatMemory;
 
     //@Qualifier("openAiChatModel")
-    public SpringAiBoardGameRagAdvisor(@Qualifier("openAiChatModel") ChatModel chatModel,
-                                       @Value("classpath:/promptTemplates/ragAdvisorPromptTemplate.st") Resource promptTemplate,
-                                       VectorStore vectorStore, @Qualifier("customChatMemory") ChatMemory chatMemory) {
+    public SpringAiBoardGameRagChatMemoryAdvisor(@Qualifier("openAiChatModel") ChatModel chatModel,
+                                                 @Value("classpath:/promptTemplates/ragAdvisorPromptTemplate.st") Resource promptTemplate,
+                                                 VectorStore vectorStore, /*@Qualifier("customChatMemory") */ChatMemory chatMemory) {
         this.chatModel = chatModel;
         this.promptTemplate = promptTemplate;
         this.vectorStore = vectorStore;
         this.chatMemory = chatMemory;
     }
 
-
+  // here we use RAQ to retrieve question from vector store
+    // and save messages (chat-response) to chat memory or vector store (VectorStoreChatMemoryAdvisor)
     public AnswerWithTitle askQuestion(QuestionWithTitle questionWithTitle) {
 
         String gameNameMatch = String.format("gameTitle == '%s'", AiUtil.normalizeGameTitle(questionWithTitle.gameTitle()));
@@ -56,6 +57,7 @@ public class SpringAiBoardGameRagAdvisor {
                                 .advisors(
 //                                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
                                         PromptChatMemoryAdvisor.builder(chatMemory).build(),
+//                                        VectorStoreChatMemoryAdvisor.builder(vectorStore).conversationId().build(),
                                         QuestionAnswerAdvisor.builder(vectorStore).build()
                                 )
                                 .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, gameNameMatch)

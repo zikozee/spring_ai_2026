@@ -32,6 +32,8 @@ dependencies {
     implementation 'org.zalando:logbook-spring-boot-starter:4.0.3'
     implementation 'org.springframework.ai:spring-ai-starter-vector-store-qdrant'
     implementation 'org.springframework.ai:spring-ai-rag:2.0.0-M4'
+//    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-neo4j'
+//    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-cassandra'
     runtimeOnly 'org.aspectj:aspectjweaver:1.9.25.1'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

@@ -27,7 +27,7 @@ public class AskController {
     private final SpringAiBoardGameService boardGameService;
     private final SelfEvaluationgBoardGameService selfEvaluationgBoardGameService;
     private final SpringAiBoardGameWithTitleService boardGameWithTitleService;
-    private final SpringAiBoardGameRagAdvisor springAiBoardGameRagAdvisor;
+    private final SpringAiBoardGameRagChatMemoryAdvisor springAiBoardGameRagChatMemoryAdvisor;
     private final SpringAiBoardGameModularRagAdvisor springAiBoardGameModularRagAdvisor;
 
     @PostMapping(path = "ask", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,7 +47,7 @@ public class AskController {
 
     @PostMapping(path = "ask-with-advisor", produces = MediaType.APPLICATION_JSON_VALUE)
     public AnswerWithTitle askWithAdvisor(@RequestBody @Valid QuestionWithTitle questionWithTitle){
-        return springAiBoardGameRagAdvisor.askQuestion(questionWithTitle);
+        return springAiBoardGameRagChatMemoryAdvisor.askQuestion(questionWithTitle);
     }
 
     @PostMapping(path = "ask-with-modular-advisor", produces = MediaType.APPLICATION_JSON_VALUE)

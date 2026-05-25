@@ -41,7 +41,7 @@ public class SpringAiBoardGameModularRagAdvisor {
         this.vectorStore = vectorStore;
     }
 
-
+// here we use vectorstore to store extra context via RAG
     public AnswerWithTitle askQuestion(QuestionWithTitle questionWithTitle, String conversationId) {
 
         String gameNameMatch = String.format("gameTitle == '%s'", AiUtil.normalizeGameTitle(questionWithTitle.gameTitle()));

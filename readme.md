@@ -165,3 +165,15 @@
 ### CONVERSATION ID
 - this is used to track a chat history, we receive it from the header letting a user specify
 - more like an isolation for a specific chat user
+
+### Persisting Chat Memory 
+- Using one of Spring AI’s persistent implementations of ChatMemoryRepository
+  - CassandraChatMemoryRepository 
+  - JdbcChatMemoryRepository 
+  - Neo4jChatMemoryRepository
+
+- to use the above i.e persistChatMemory instead of inApp,  remove the chatMemory config, 
+  - spring context will wire-up any of the above into the ChatMemory so we can use as it is
+
+-  VectorStoreChatMemoryAdvisor
+  - uses vectorestore
