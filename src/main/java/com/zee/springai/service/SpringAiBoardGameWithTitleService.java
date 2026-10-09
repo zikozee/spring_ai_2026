@@ -9,7 +9,6 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.ResponseEntity;
 import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.metadata.Usage;
-import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,15 +25,15 @@ import reactor.core.publisher.Flux;
 @Service
 public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleService {
 
-    private final ChatModel chatModel;
+    private final ChatClient chatClient;
     private final Resource promptTemplate;
     private final GameRulesService gameRulesService;
 
     //@Qualifier("openAiChatModel")
-    public SpringAiBoardGameWithTitleService(@Qualifier("aiChatModel") ChatModel chatModel,
+    public SpringAiBoardGameWithTitleService(@Qualifier("aiChatClient") ChatClient chatClient,
                                              @Value("classpath:/promptTemplates/systemPromptTemplate.st") Resource systemPromptTemplate,
                                              GameRulesService gameRulesService) {
-        this.chatModel = chatModel;
+        this.chatClient = chatClient;
         this.promptTemplate = systemPromptTemplate;
         this.gameRulesService = gameRulesService;
     }
@@ -44,7 +43,6 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
 
         String gameRules = gameRulesService.getRulesFor(questionWithTitle.gameTitle(), questionWithTitle.question());
 
-        ChatClient chatClient = ChatClient.create(chatModel);
 //        String answerText = chatClient.prompt()
         ResponseEntity<ChatResponse, AnswerWithTitle> responseEntity = chatClient.prompt()
                 .system(systemSpec -> systemSpec
@@ -78,7 +76,7 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
 
         String gameRules = gameRulesService.getRulesFor(questionWithTitle.gameTitle(), questionWithTitle.question());
 
-        return ChatClient.create(chatModel)
+        return chatClient
                 .prompt()
                 .system(systemSpec -> systemSpec
                         .text(promptTemplate)
