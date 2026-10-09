@@ -31,7 +31,7 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
     private final GameRulesService gameRulesService;
 
     //@Qualifier("openAiChatModel")
-    public SpringAiBoardGameWithTitleService(@Qualifier("openAiChatModel") ChatModel chatModel,
+    public SpringAiBoardGameWithTitleService(@Qualifier("aiChatModel") ChatModel chatModel,
                                              @Value("classpath:/promptTemplates/systemPromptTemplate.st") Resource systemPromptTemplate,
                                              GameRulesService gameRulesService) {
         this.chatModel = chatModel;

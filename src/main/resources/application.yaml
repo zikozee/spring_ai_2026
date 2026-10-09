@@ -53,3 +53,8 @@ logging:
 logbook:
   format:
     style: http
+
+
+ai:
+  #openai|ollama
+  provider: openai

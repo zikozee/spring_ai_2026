@@ -21,7 +21,7 @@ public class SpringAiBoardGameService implements BoardGameService {
     private final ChatModel chatModel;
 
     //@Qualifier("openAiChatModel")
-    public SpringAiBoardGameService(@Qualifier("ollamaChatModel") ChatModel chatModel) {
+    public SpringAiBoardGameService(@Qualifier("aiChatModel") ChatModel chatModel) {
         this.chatModel = chatModel;
     }
 

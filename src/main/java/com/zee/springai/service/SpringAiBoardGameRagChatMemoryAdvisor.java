@@ -31,7 +31,7 @@ public class SpringAiBoardGameRagChatMemoryAdvisor {
     private final ChatMemory chatMemory;
 
     //@Qualifier("openAiChatModel")
-    public SpringAiBoardGameRagChatMemoryAdvisor(@Qualifier("openAiChatModel") ChatModel chatModel,
+    public SpringAiBoardGameRagChatMemoryAdvisor(@Qualifier("aiChatModel") ChatModel chatModel,
                                                  @Value("classpath:/promptTemplates/ragAdvisorPromptTemplate.st") Resource promptTemplate,
                                                  VectorStore vectorStore, /*@Qualifier("customChatMemory") */ChatMemory chatMemory) {
         this.chatModel = chatModel;

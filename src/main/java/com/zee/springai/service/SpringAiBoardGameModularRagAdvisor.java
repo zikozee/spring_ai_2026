@@ -32,8 +32,7 @@ public class SpringAiBoardGameModularRagAdvisor {
     private final Resource promptTemplate;
     private final VectorStore vectorStore;
 
-    //@Qualifier("openAiChatModel")
-    public SpringAiBoardGameModularRagAdvisor(@Qualifier("openAiChatModel") ChatModel chatModel,
+    public SpringAiBoardGameModularRagAdvisor(@Qualifier("aiChatModel") ChatModel chatModel,
                                               @Value("classpath:/promptTemplates/ragAdvisorPromptTemplate.st") Resource promptTemplate,
                                               VectorStore vectorStore) {
         this.chatModel = chatModel;

@@ -32,7 +32,7 @@ public class AppConfig {
 
     @Primary
     @Bean
-    QdrantVectorStore customVectorStore(QdrantClient client, @Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel){
+    QdrantVectorStore customVectorStore(QdrantClient client, @Qualifier("aiEmbeddingModel") EmbeddingModel embeddingModel){
 
         return QdrantVectorStore
                 .builder(client, embeddingModel)

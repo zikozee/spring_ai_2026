@@ -28,8 +28,7 @@ public class SelfEvaluationgBoardGameService implements BoardGameService {
     private final ChatModel chatModel;
     private final RelevancyEvaluator relevancyEvaluator;
 
-    //@Qualifier("openAiChatModel")
-    public SelfEvaluationgBoardGameService(@Qualifier("ollamaChatModel") ChatModel chatModel) {
+    public SelfEvaluationgBoardGameService(@Qualifier("aiChatModel") ChatModel chatModel) {
         this.chatModel = chatModel;
         this.relevancyEvaluator = new RelevancyEvaluator(ChatClient.builder(chatModel));
     }
