@@ -177,3 +177,13 @@
 
 -  VectorStoreChatMemoryAdvisor
   - uses vectorestore
+
+
+### Tools
+- Whereas RAG provides information via documents for the LLM, tools provide data via application logic. What’s more, tools can perform tasks, such as updating some data or invoking an API, in addition to providing data
+- Concept
+  - App calls LLM with tools, 
+  - if LLM is unable to answer the question, it checks if there's any tool (function), that relates to the question asked
+  - if the tool has a parameter the LLM supplies the value
+  - the LLM then asks the App to help it call that function (alongside the question asked)
+  - the App calls the functions response back to the LLM, The LLM then uses the response to compose the result

@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '4.0.5'
+    id 'org.springframework.boot' version '4.1.1'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -19,19 +19,19 @@ repositories {
 }
 
 ext {
-    set('springAiVersion', "2.0.0-M4")
+    set('springAiVersion', "2.0.1")
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    implementation 'org.springframework.ai:spring-ai-advisors-vector-store'
     implementation 'org.springframework.ai:spring-ai-starter-model-openai'
     implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
-    implementation 'org.springframework.retry:spring-retry:2.0.12'
+    implementation 'org.springframework.retry:spring-retry:2.0.13'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.zalando:logbook-spring-boot-starter:4.0.3'
+    implementation 'org.zalando:logbook-spring-boot-starter:4.2.0'
     implementation 'org.springframework.ai:spring-ai-starter-vector-store-qdrant'
-    implementation 'org.springframework.ai:spring-ai-rag:2.0.0-M4'
+    implementation 'org.springframework.ai:spring-ai-vector-store-advisor'
+    implementation 'org.springframework.ai:spring-ai-rag:2.1.0-M1'
 //    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-neo4j'
 //    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-cassandra'
     runtimeOnly 'org.aspectj:aspectjweaver:1.9.25.1'
@@ -41,7 +41,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.wiremock.integrations:wiremock-spring-boot:4.2.1'
+    testImplementation 'org.wiremock.integrations:wiremock-spring-boot:4.4.3'
 }
 
 dependencyManagement {

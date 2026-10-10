@@ -6,7 +6,7 @@ import com.zee.springai.dto.QuestionWithTitle;
 import com.zee.springai.util.AiUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
@@ -55,8 +55,7 @@ public class SpringAiBoardGameRagChatMemoryAdvisor {
                 .advisors(advisorSpec ->
                         advisorSpec
                                 .advisors(
-//                                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
-                                        PromptChatMemoryAdvisor.builder(chatMemory).build(),
+                                        MessageChatMemoryAdvisor.builder(chatMemory).build(),
 //                                        VectorStoreChatMemoryAdvisor.builder(vectorStore).conversationId().build(),
                                         QuestionAnswerAdvisor.builder(vectorStore).build()
                                 )

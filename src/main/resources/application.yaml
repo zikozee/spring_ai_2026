@@ -57,4 +57,4 @@ logbook:
 
 ai:
   #openai|ollama
-  provider: openai
+  provider: ollama
