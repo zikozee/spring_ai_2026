@@ -23,6 +23,8 @@ ext {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-h2console'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.ai:spring-ai-starter-model-openai'
     implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
@@ -35,6 +37,7 @@ dependencies {
 //    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-neo4j'
 //    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-cassandra'
     runtimeOnly 'org.aspectj:aspectjweaver:1.9.25.1'
+    runtimeOnly 'com.h2database:h2'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'

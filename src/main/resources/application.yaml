@@ -2,6 +2,18 @@ spring:
   application:
     name: spring_ai_2026
 
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+
+  sql:
+    init:
+      mode: always
+
+  h2:
+    console:
+      enabled: true
 
   ai:
     openai:
@@ -49,12 +61,16 @@ logging:
   level:
     #to see raw request and response
     org.zalando.logbook: TRACE
+#    org.springframework.jdbc.datasource.init: DEBUG
 
 logbook:
   format:
     style: http
+  predicate:
+    exclude:
+      - path: /h2-console/**
 
 
 ai:
   #openai|ollama
-  provider: ollama
+  provider: openai

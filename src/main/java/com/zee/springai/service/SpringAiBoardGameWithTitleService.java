@@ -3,6 +3,7 @@ package com.zee.springai.service;
 
 import com.zee.springai.dto.AnswerWithTitle;
 import com.zee.springai.dto.QuestionWithTitle;
+import com.zee.springai.tools.GameTools;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -28,14 +29,16 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
     private final ChatClient chatClient;
     private final Resource promptTemplate;
     private final GameRulesService gameRulesService;
+    private final GameTools gameTools;
 
     //@Qualifier("openAiChatModel")
     public SpringAiBoardGameWithTitleService(@Qualifier("aiChatClient") ChatClient chatClient,
                                              @Value("classpath:/promptTemplates/systemPromptTemplate.st") Resource systemPromptTemplate,
-                                             GameRulesService gameRulesService) {
+                                             GameRulesService gameRulesService, GameTools gameTools) {
         this.chatClient = chatClient;
         this.promptTemplate = systemPromptTemplate;
         this.gameRulesService = gameRulesService;
+        this.gameTools = gameTools;
     }
 
     @Override
@@ -51,6 +54,7 @@ public class SpringAiBoardGameWithTitleService implements BoardGameWithTitleServ
                         .param("rules", gameRules))
 
                 .user(questionWithTitle.question())
+                .tools(gameTools)
 
                 // i can override props here
 //                .options(ChatOptions.builder()

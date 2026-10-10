@@ -187,3 +187,25 @@
   - if the tool has a parameter the LLM supplies the value
   - the LLM then asks the App to help it call that function (alongside the question asked)
   - the App calls the functions response back to the LLM, The LLM then uses the response to compose the result
+
+- there are two options either we pass Tools to the chat client via the 
+```java
+    private final GameTools gameTools;
+
+ // omitted code
+  ResponseEntity<ChatResponse, AnswerWithTitle> responseEntity = chatClient.prompt()
+          .system(systemSpec -> systemSpec
+                  .text(promptTemplate)
+                  .param("gameTitle", questionWithTitle.gameTitle())
+                  .param("rules", gameRules))
+
+          .user(questionWithTitle.question())
+          .tools(gameTools) //  <<<<<<
+
+          .call()
+          .responseEntity(AnswerWithTitle.class);
+// omitted code
+```
+
+- or we can define the Tools as a function  removed in spring AI 2.0 for consistency sake
+  - see. spring ai in action by Craig Walls, chapter 6.3

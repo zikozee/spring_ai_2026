@@ -1,4 +1,4 @@
-package com.zee.springai.tools;
+package com.zee.springai.tools.intro;
 
 
 import org.springframework.ai.chat.client.ChatClient;
