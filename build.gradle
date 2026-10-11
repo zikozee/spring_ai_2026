@@ -34,6 +34,9 @@ dependencies {
     implementation 'org.springframework.ai:spring-ai-starter-vector-store-qdrant'
     implementation 'org.springframework.ai:spring-ai-vector-store-advisor'
     implementation 'org.springframework.ai:spring-ai-rag:2.1.0-M1'
+    // mcp client starter
+    implementation 'org.springframework.ai:spring-ai-starter-mcp-client'
+
 //    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-neo4j'
 //    implementation 'org.springframework.ai:spring-ai-starter-model-chat-memory-repository-cassandra'
     runtimeOnly 'org.aspectj:aspectjweaver:1.9.25.1'

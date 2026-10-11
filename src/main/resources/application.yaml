@@ -16,6 +16,27 @@ spring:
       enabled: true
 
   ai:
+    mcp:
+      client:
+        stdio:
+        # spring style
+#          connections:
+#              #mcp Client name
+#            filesystem:
+#              # mcp server command
+#              command: 'npx'
+#              # arguments
+#              args:
+#                - '-y'
+#                - '@modelcontextprotocol/server-filesystem'
+#                - '/Users/zikozee/codes/my_projects/spring_ai_2026/playground'
+#        toolcallback:
+#          enabled: true
+
+       # JSON configuration format for Claude Desktop
+         servers-configuration: classpath:mcp-servers.json
+      #  Point to Claude Config on Mac
+#         servers-configuration: "file://${HOME}/Library/Application Support/Claude/claude_desktop_config.json"
     openai:
       api-key: ${OPEN_API_KEY}
       # as env in system or ide

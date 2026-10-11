@@ -179,7 +179,7 @@
   - uses vectorestore
 
 
-### Tools
+# Tools
 - Whereas RAG provides information via documents for the LLM, tools provide data via application logic. What’s more, tools can perform tasks, such as updating some data or invoking an API, in addition to providing data
 - Concept
   - App calls LLM with tools, 
@@ -209,3 +209,57 @@
 
 - or we can define the Tools as a function  removed in spring AI 2.0 for consistency sake
   - see. spring ai in action by Craig Walls, chapter 6.3
+
+# MCP
+## MCP CLIENT
+- connection spring ai to Claude Desktop config
+1. spring style
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        stdio:
+          connections:
+            #mcp Client name
+            filesystem:
+              # mcp server command
+              command: 'npx'
+              # arguments
+              args:
+                - '-y'
+                - '@modelcontextprotocol/server-filesystem'
+                - '/Users/habuma/mcp-playground'
+        toolcallback:
+          enabled: true
+```
+
+2. JSON configuration format for Claude Desktop
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-servers.json
+```
+
+3.  Point to Claude Config on Mac
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        stdio:
+          servers-configuration: "file://${HOME}/Library/Application Support/Claude/claude_desktop_config.json"
+```
+
+- to enable chatcCLient to use the tools that the server(s) make available
+```java
+    public McpAskController(@Qualifier("aiChatClient") ChatClient chatClient, ToolCallbackProvider toolCallbackProvider) {
+        this.chatClient = chatClient
+                .mutate()
+                .defaultTools(toolCallbackProvider) // enable chatcCLient to use the tools that the server(s) make available
+                .build();
+    }
+```
