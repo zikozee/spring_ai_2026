@@ -36,4 +36,6 @@ public class McpAskController {
                 .call()
                 .entity(Answer.class);
     }
+
+//    public record Answer(List<String> answers){}
 }

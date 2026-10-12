@@ -7,6 +7,13 @@
         "@modelcontextprotocol/server-filesystem",
         "/Users/zikozee/codes/my_projects/spring_ai_2026/playground"
       ]
+    },
+    "boardgamedb": {
+      "command": "/Users/zikozee/.sdkman/candidates/java/26-amzn/bin/java",
+      "args": [
+        "-jar",
+        "/Users/zikozee/codes/my_projects/sample-mcp-server/build/libs/sample-mcp-server-0.0.1-SNAPSHOT.jar"
+      ]
     }
   }
 }

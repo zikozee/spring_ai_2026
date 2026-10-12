@@ -212,7 +212,10 @@
 
 # MCP
 ## MCP CLIENT
-- connection spring ai to Claude Desktop config
+
+### STDIO
+  - the client is responsible for running it, and the communication takes place over standard input and standard output
+
 1. spring style
 ```yaml
 spring:
@@ -254,6 +257,8 @@ spring:
           servers-configuration: "file://${HOME}/Library/Application Support/Claude/claude_desktop_config.json"
 ```
 
+
+### Enable chatCLient to use tools
 - to enable chatcCLient to use the tools that the server(s) make available
 ```java
     public McpAskController(@Qualifier("aiChatClient") ChatClient chatClient, ToolCallbackProvider toolCallbackProvider) {
@@ -263,3 +268,38 @@ spring:
                 .build();
     }
 ```
+
+### pointing to sample mcp sever
+1. using spring style
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        stdio:
+          connections:
+            boardgamedb:
+              command: ${JAVA_HOME}/bin/java
+              args:
+              - '-jar'
+              - '${MCP_SERVER_PATH}/build/libs/mcp-server-0.0.1-SNAPSHOT.jar'
+```
+
+
+2. using Claude Desktop configuration (mcp-servers.json)
+```json
+{
+  "mcpServers": {
+    "boardgamedb": {
+      "command": "/Users/zikozee/.sdkman/candidates/java/26-amzn/bin/java",
+      "args": [
+        "-jar",
+        "/Users/zikozee/codes/my_projects/sample-mcp-server/build/libs/sample-mcp-server-0.0.1-SNAPSHOT.jar"
+      ]
+    }
+  }
+}
+```
+
+<hr>
+
