@@ -303,3 +303,18 @@ spring:
 
 <hr>
 
+### HTTP + SSE
+- connects to an mcp server rather than launching the server
+- you can use webflux: The key benefit here is a more efficient use of a few request-handling threads
+  - implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  - implementation 'org.springframework.ai:spring-ai-starter-mcp-client-webflux'
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        sse:
+          connections:
+            boardgamedb:
+              url: http://localhost:3001
+```
