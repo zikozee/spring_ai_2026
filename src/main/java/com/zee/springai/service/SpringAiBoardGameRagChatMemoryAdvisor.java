@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import static org.springframework.ai.chat.memory.ChatMemory.CONVERSATION_ID;
+
 /**
  * @dev : Ezekiel Eromosei
  * @date : 05 Apr, 2026
@@ -60,6 +62,7 @@ public class SpringAiBoardGameRagChatMemoryAdvisor {
                                         QuestionAnswerAdvisor.builder(vectorStore).build()
                                 )
                                 .param(QuestionAnswerAdvisor.FILTER_EXPRESSION, gameNameMatch)
+                                .param(CONVERSATION_ID, "some-Convo-id") // fixes breaking change
                         )
                 .call()
                 .entity(AnswerWithTitle.class);

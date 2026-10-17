@@ -212,6 +212,7 @@
 
 # MCP
 ## MCP CLIENT
+- note a mcp client(sync or async) can process a request from a mcp server (sync or async) 
 
 ### STDIO
   - the client is responsible for running it, and the communication takes place over standard input and standard output
@@ -308,6 +309,7 @@ spring:
 - you can use webflux: The key benefit here is a more efficient use of a few request-handling threads
   - implementation 'org.springframework.boot:spring-boot-starter-webflux'
   - implementation 'org.springframework.ai:spring-ai-starter-mcp-client-webflux'
+- note you can connect  multiple servers
 ```yaml
 spring:
   ai:
@@ -317,4 +319,42 @@ spring:
           connections:
             boardgamedb:
               url: http://localhost:3001
+              # default below, note mcp servers can have difference sse endpoints paths
+#              sse-endpoint: /sse
+            server-2:
+              url: http://localhost:5002
 ```
+
+### STREAMABLE HTTP
+- streamable form of http + sse
+- defaults to /mcp
+
+- 
+
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        type: ASYNC
+        streamable-http:
+          connections:
+            boardgamedb:
+              url: http://localhost:3001
+              # default below, note mcp servers can have difference streamable-http endpoints paths
+            # endpoint: /mcp
+            server-2:
+              url: http://localhost:5002
+```
+
+- @Tools vs @McpTool and their params
+  - if you use **@Tools**, you have to register them in the ToolCallbackProvider
+```java
+    @Bean
+    ToolCallbackProvider toolCallbackProvider(GameTools gameTools, ...){
+        return MethodToolCallbackProvider.builder()
+                .toolObjects(gameTools, ...)
+                .build();
+    }
+```
+  if you use @McpTools, registering **ToolCallbackProvider** not required

@@ -18,7 +18,8 @@ spring:
   ai:
     mcp:
       client:
-        sse:
+        type: ASYNC
+        streamable-http:
         # spring style
           connections:
             #mcp Client name

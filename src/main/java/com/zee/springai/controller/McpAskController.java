@@ -1,7 +1,6 @@
 package com.zee.springai.controller;
 
 
-import com.zee.springai.dto.Answer;
 import com.zee.springai.dto.Question;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.tool.ToolCallbackProvider;
@@ -10,6 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
 
 /**
  * @dev : Ezekiel Eromosei
@@ -30,12 +33,20 @@ public class McpAskController {
     }
 
     @PostMapping(path = "ask")
-    public Answer ask(@RequestBody Question question) {
-        return chatClient.prompt()
+    public Mono<Answer> ask(@RequestBody Question question) {
+        return Mono.fromCallable(() ->
+                chatClient.prompt()
+                .system("""
+                                Use the board game tools to answer the question.
+                                Return matching games in the games field.
+                                Preserve each game's title, and description.
+                                """)
                 .user(question.question())
                 .call()
-                .entity(Answer.class);
+                .entity(Answer.class))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
-//    public record Answer(List<String> answers){}
+    public record BoardGame(String title, String description){}
+    public record Answer(List<BoardGame> games) {}
 }
